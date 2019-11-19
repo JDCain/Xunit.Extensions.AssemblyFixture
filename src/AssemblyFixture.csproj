@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.0</Version>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <Version>2.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Daniel Cazzulino</Authors>
+    <Authors>Daniel Cazzulino, J.D. Cain</Authors>
     <Product />
     <Company />
+    <RootNamespace>Xunit.Extensions.AssemblyFixture</RootNamespace>
+    <AssemblyName>Xunit.Extensions.AssemblyFixture</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

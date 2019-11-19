@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Xunit
+namespace Xunit.Extensions.AssemblyFixture
 {
 	class TestAssemblyRunner : XunitTestAssemblyRunner
 	{

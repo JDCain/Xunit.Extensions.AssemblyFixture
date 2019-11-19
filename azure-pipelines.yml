@@ -1,0 +1,76 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    include:
+    - src/*
+    - tests/*
+  tags:
+    include:
+    - '*'
+
+pool:
+  vmImage: 'windows-2019'
+stages:
+- stage: Build
+  jobs:
+  - job: 
+    steps:
+      - task: GitVersion@5
+        inputs:
+            runtime: 'core'
+            configFilePath: 'GitVersion.yml'
+            additionalArguments: '/output json'
+      - task: DotNetCoreCLI@2
+        inputs:
+            command: 'build'
+            projects: '**/*tests.csproj'
+            configuration: '$(Build.Configuration)'
+      - task: VSTest@2
+        inputs:
+            testSelector: 'testAssemblies'
+            testAssemblyVer2: |
+                **\*tests*.dll
+                !**\*TestAdapter.dll
+                !**\obj\**
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+      - task: DotNetCoreCLI@2
+        inputs:
+            command: 'pack'
+            packagesToPack: '**/*.csproj'
+            versioningScheme: 'off'
+            buildProperties: 'PackageVersion=$(GITVERSION.SEMVER);AssemblyVersion=$(GITVERSION.ASSEMBLYSEMVER);InformationalVersion=$(GITVERSION.INFORMATIONALVERSION)'
+            verbosityPack: 'Normal'
+      - task: PublishBuildArtifacts@1
+        inputs:
+            pathToPublish: $(Build.ArtifactStagingDirectory)
+            artifactName: drop
+      - task: PowerShell@2
+        inputs:
+            targetType: 'inline'
+            script: |
+                get-childitem Env:
+- stage: Release
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  jobs:
+    - job: 
+      steps:
+      - task: DownloadBuildArtifacts@0
+        inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: drop
+            itemPattern: '**/*.nupkg'
+            downloadPath: '$(System.ArtifactsDirectory)'
+      - task: NuGetCommand@2
+        inputs:
+          command: 'push'
+          packagesToPush: '$(System.ArtifactsDirectory)/**/*.nupkg;!$(System.ArtifactsDirectory)/**/*.symbols.nupkg'
+          nuGetFeedType: 'external'
+          publishFeedCredentials: 'nuget.org'

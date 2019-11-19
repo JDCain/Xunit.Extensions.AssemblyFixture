@@ -1,7 +1,8 @@
 ﻿using System;
 using Xunit;
+using Xunit.Extensions.AssemblyFixture;
 
-[assembly: Xunit.TestFramework("Xunit.TestFramework", "assemblyfixture")]
+[assembly: TestFramework(AssemblyFixtureFramework.TypeName, AssemblyFixtureFramework.AssemblyName)]
 namespace AssemblyFixture.Tests
 {
 	public class Sample1 : IAssemblyFixture<MyAssemblyFixture>

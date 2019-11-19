@@ -1,0 +1,9 @@
+assembly-versioning-scheme: MajorMinorPatchTag
+mode: ContinuousDeployment
+branches: {}
+ignore:
+  sha: []
+merge-message-formats: {}
+branches:
+    release:
+        tag: preview

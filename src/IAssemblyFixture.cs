@@ -1,4 +1,4 @@
-﻿namespace Xunit
+﻿namespace Xunit.Extensions.AssemblyFixture
 {
 	/// <summary>
 	/// Used to decorate xUnit.net test classes and collections to indicate a test which has
