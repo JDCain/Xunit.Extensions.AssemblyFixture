@@ -1,4 +1,6 @@
-# xunit.assemblyfixture
+# Xunit.Extensions.AssemblyFixture
+
+This is a fork of xunit.assemblyfixture by Daniel Cazzulino (kzu) which has been updated to support .Net Standard and the Core tooling.
 
 Provides shared state/fixture data across tests in the same assembly, following the design of [class fixtures](https://xunit.github.io/docs/shared-context.html#class-fixture) (rather than the more convoluted [collection fixtures](https://xunit.github.io/docs/shared-context.html#collection-fixture)). To complement [xUnit documentation style](https://xunit.github.io/docs/shared-context.html), I shamelessly copy its layout here.
 
