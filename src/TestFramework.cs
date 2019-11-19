@@ -2,15 +2,18 @@
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace Xunit
+namespace Xunit.Extensions.AssemblyFixture
 {
-	class TestFramework : XunitTestFramework
+    public class AssemblyFixtureFramework : XunitTestFramework
 	{
-		public TestFramework(IMessageSink messageSink)
+		public AssemblyFixtureFramework(IMessageSink messageSink)
 			: base(messageSink)
 		{ }
 
-		protected override ITestFrameworkExecutor CreateExecutor(AssemblyName assemblyName)
+        public const string TypeName = "Xunit.Extensions.AssemblyFixture.AssemblyFixtureFramework";
+        public const string AssemblyName = "Xunit.Extensions.AssemblyFixture";
+
+        protected override ITestFrameworkExecutor CreateExecutor(AssemblyName assemblyName)
 		{
 			return new TestFrameworkExecutor(assemblyName, SourceInformationProvider, DiagnosticMessageSink);
 		}
