@@ -2,13 +2,20 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
-    <Version>2.1.0</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Daniel Cazzulino, J.D. Cain</Authors>
+    <Version>0.1.0</Version>
+    <Authors>kzu, J.D. Cain</Authors>
     <Product />
     <Company />
     <RootNamespace>Xunit.Extensions.AssemblyFixture</RootNamespace>
     <AssemblyName>Xunit.Extensions.AssemblyFixture</AssemblyName>
+    <PackageProjectUrl>https://github.com/JDCain/Xunit.Extensions.AssemblyFixture</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JDCain/Xunit.Extensions.AssemblyFixture</RepositoryUrl>
+    <PackageTags>xunit</PackageTags>
+    <Description>
+      Fork of xunit.assembly by kzu, updated to support netcore.
+      Provides assembly-level shared state via IAssemblyFixture&lt;TFixture&gt;, just like built-in class fixture state.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
