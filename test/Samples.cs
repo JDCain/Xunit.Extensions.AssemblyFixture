@@ -8,12 +8,12 @@ namespace AssemblyFixture.Tests
 {
 	public class Sample1 : IAssemblyFixture<MyAssemblyFixture>
 	{
-		MyAssemblyFixture fixture;
+        private readonly MyAssemblyFixture _fixture;
 
 		// Fixtures are injectable into the test classes, just like with class and collection fixtures
 		public Sample1(MyAssemblyFixture fixture)
 		{
-			this.fixture = fixture;
+			_fixture = fixture;
 		}
 
 		[Fact]
@@ -25,11 +25,11 @@ namespace AssemblyFixture.Tests
 
 	public class Sample2 : IAssemblyFixture<MyAssemblyFixture>
 	{
-		MyAssemblyFixture fixture;
+        private readonly MyAssemblyFixture _fixture;
 
 		public Sample2(MyAssemblyFixture fixture)
 		{
-			this.fixture = fixture;
+			_fixture = fixture;
 		}
 
 		[Fact]
@@ -41,17 +41,17 @@ namespace AssemblyFixture.Tests
 
 	public class Sample3 : IAssemblyFixture<MyAssemblyFixtureWithMessageSink>
 	{
-		MyAssemblyFixtureWithMessageSink fixture;
+        private readonly MyAssemblyFixtureWithMessageSink _fixture;
 
 		public Sample3(MyAssemblyFixtureWithMessageSink fixture)
 		{
-			this.fixture = fixture;
+			_fixture = fixture;
 		}
 
 		[Fact]
 		public void EnsureThatHaveIMessageSink()
 		{
-			Assert.NotNull(fixture.MessageSink);
+			Assert.NotNull(_fixture.MessageSink);
 		}
 	}
 
@@ -75,13 +75,12 @@ namespace AssemblyFixture.Tests
 	public class MyAssemblyFixtureWithMessageSink : IDisposable
 	{
 		public static int InstantiationCount;
-		private IMessageSink _messageSink;
 
-		public IMessageSink MessageSink => _messageSink;
+        public IMessageSink MessageSink { get; }
 
-		public MyAssemblyFixtureWithMessageSink(IMessageSink messageSink)
+        public MyAssemblyFixtureWithMessageSink(IMessageSink messageSink)
 		{
-			_messageSink = messageSink;
+			MessageSink = messageSink;
 			InstantiationCount++;
 		}
 

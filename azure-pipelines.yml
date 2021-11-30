@@ -16,17 +16,18 @@ trigger:
     - '*'
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'windows-2022'
 stages:
 - stage: Build
   jobs:
   - job: 
     steps:
-      - task: GitVersion@5
+      - task: gitversion/setup@0
         inputs:
-            runtime: 'core'
-            configFilePath: 'GitVersion.yml'
-            additionalArguments: '/output json'
+          versionSpec: '5.x'
+      - task: gitversion/execute@0
+        inputs:
+          additionalArguments: '/output json'
       - task: DotNetCoreCLI@2
         inputs:
             command: 'build'
