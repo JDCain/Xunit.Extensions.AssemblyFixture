@@ -16,6 +16,7 @@
       Provides assembly-level shared state via IAssemblyFixture&lt;TFixture&gt;, just like built-in class fixture state.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IsPackable>true</IsPackable>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>

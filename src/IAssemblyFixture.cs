@@ -1,4 +1,6 @@
-﻿namespace Xunit.Extensions.AssemblyFixture
+﻿using Xunit.Abstractions;
+
+namespace Xunit.Extensions.AssemblyFixture
 {
 	/// <summary>
 	/// Used to decorate xUnit.net test classes and collections to indicate a test which has
@@ -9,5 +11,5 @@
 	/// exactly matches the <typeparamref name="TFixture"/>.
 	/// </summary>
 	/// <typeparam name="TFixture">The type of the fixture.</typeparam>
-	public interface IAssemblyFixture<TFixture> where TFixture : class, new() { }
+	public interface IAssemblyFixture<TFixture> where TFixture : class { }
 }

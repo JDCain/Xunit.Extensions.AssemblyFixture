@@ -40,7 +40,7 @@ namespace Xunit.Extensions.AssemblyFixture
 				// to do it ourselves.
 				lock (assemblyFixtureMappings)
 					if (!assemblyFixtureMappings.ContainsKey(fixtureType))
-						Aggregator.Run(() => assemblyFixtureMappings.Add(fixtureType, Activator.CreateInstance(fixtureType)));
+						Aggregator.Run(() => assemblyFixtureMappings.Add(fixtureType, CreateAssemblyFixtureInstance(fixtureType)));
 			}
 
 			// Don't want to use .Concat + .ToDictionary because of the possibility of overriding types,
@@ -52,5 +52,19 @@ namespace Xunit.Extensions.AssemblyFixture
 			// We've done everything we need, so let the built-in types do the rest of the heavy lifting
 			return new XunitTestClassRunner(testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource, combinedFixtures).RunAsync();
 		}
+
+		private object CreateAssemblyFixtureInstance(Type fixtureType) {
+			var constructors = fixtureType.GetConstructors();
+
+			if (constructors.Length > 1)
+				throw new Exception($"The type ${fixtureType.FullName} can only contain one constructor.");
+
+
+			if (constructors[0].GetParameters().Length == 0)
+				return Activator.CreateInstance(fixtureType);
+
+			return Activator.CreateInstance(fixtureType, diagnosticMessageSink);
+		}
+
 	}
 }
