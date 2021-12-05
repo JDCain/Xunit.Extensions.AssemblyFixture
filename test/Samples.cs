@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Extensions.AssemblyFixture;
@@ -55,6 +57,39 @@ namespace AssemblyFixture.Tests
 		}
 	}
 
+	public class Sample4 : IAssemblyFixture<MyAssemblyFixtureWithAsyncLifetime>
+	{
+		private readonly MyAssemblyFixtureWithAsyncLifetime _fixture;
+
+		public Sample4(MyAssemblyFixtureWithAsyncLifetime fixture)
+		{
+			_fixture = fixture;
+		}
+
+		[Fact]
+		public void EnsureSingleton()
+		{
+			Assert.Equal(1, MyAssemblyFixtureWithAsyncLifetime.InstantiationCount);
+		}
+	}
+
+	public class Sample5: IAssemblyFixture<MyAssemblyFixtureWithAsyncLifetimeAndMessageSink>
+	{
+		private readonly MyAssemblyFixtureWithAsyncLifetimeAndMessageSink _fixture;
+
+		public Sample5(MyAssemblyFixtureWithAsyncLifetimeAndMessageSink fixture)
+		{
+			_fixture = fixture;
+		}
+
+		[Fact]
+		public void EnsureThatHaveIMessageSink()
+		{
+			Assert.NotNull(_fixture.Sink);
+		}
+	}
+
+
 	public class MyAssemblyFixture : IDisposable
 	{
 		public static int InstantiationCount;
@@ -89,6 +124,50 @@ namespace AssemblyFixture.Tests
 			// Uncomment this and it will surface as an assembly cleanup failure
 			//throw new DivideByZeroException();
 			//InstantiationCount = 0;
+		}
+	}
+
+    public class MyAssemblyFixtureWithAsyncLifetime : IAsyncLifetime
+    {
+		public static int InstantiationCount;
+
+        public Task DisposeAsync()
+        {
+			InstantiationCount = 0;
+
+			return Task.CompletedTask;
+		}
+
+        public Task InitializeAsync()
+        {
+			InstantiationCount++;
+			return Task.CompletedTask;
+        }
+    }
+
+	public class MyAssemblyFixtureWithAsyncLifetimeAndMessageSink : IAsyncLifetime
+	{
+		public static int InstantiationCount;
+
+
+        public MyAssemblyFixtureWithAsyncLifetimeAndMessageSink(IMessageSink sink)
+        {
+            Sink = sink;
+        }
+
+        public IMessageSink Sink { get; }
+
+        public Task DisposeAsync()
+		{
+			InstantiationCount = 0;
+
+			return Task.CompletedTask;
+		}
+
+		public Task InitializeAsync()
+		{
+			InstantiationCount++;
+			return Task.CompletedTask;
 		}
 	}
 }
