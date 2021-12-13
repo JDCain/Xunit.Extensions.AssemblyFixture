@@ -2,15 +2,15 @@
 
 This is a fork of xunit.assemblyfixture by Daniel Cazzulino (kzu) which has been updated to support .Net Standard and the Core tooling.
 
-Provides shared state/fixture data across tests in the same assembly, following the design of [class fixtures](https://xunit.github.io/docs/shared-context.html#class-fixture) (rather than the more convoluted [collection fixtures](https://xunit.github.io/docs/shared-context.html#collection-fixture)). To complement [xUnit documentation style](https://xunit.github.io/docs/shared-context.html), I shamelessly copy its layout here.
+Provides shared state/fixture data across tests in the same assembly, following the design of [class fixtures](https://xunit.net/docs/shared-context.html#class-fixture) (rather than the more convoluted [collection fixtures](https://xunit.net/docs/shared-context.html#collection-fixture)). To complement [xUnit documentation style](https://xunit.net/docs/shared-context.html), I shamelessly copy its layout here.
 
 ## Shared Context between Tests
 
-Please read [xUnit documentation](https://xunit.github.io/docs/shared-context.html) on shared context and the various built-in options, which are:
+Please read [xUnit documentation](https://xunit.net/docs/shared-context.html) on shared context and the various built-in options, which are:
 
-- [Constructor and Dispose](https://xunit.github.io/docs/shared-context.html#constructor) (shared setup/cleanup code without sharing object instances)
-- [Class Fixtures](https://xunit.github.io/docs/shared-context.html#class-fixture) (shared object instance across tests in a single class)
-- [Collection Fixtures](https://xunit.github.io/docs/shared-context.html#collection-fixture) (shared object instances across multiple test classes
+- [Constructor and Dispose](https://xunit.net/docs/shared-context.html#constructor) (shared setup/cleanup code without sharing object instances)
+- [Class Fixtures](https://xunit.net/docs/shared-context.html#class-fixture) (shared object instance across tests in a single class)
+- [Collection Fixtures](https://xunit.net/docs/shared-context.html#collection-fixture) (shared object instances across multiple test classes
 
 To which this project adds:
 
