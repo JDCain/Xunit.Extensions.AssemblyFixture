@@ -77,8 +77,12 @@ namespace Xunit.Extensions.AssemblyFixture
                                   async (disposable, _) => await Aggregator.RunAsync(async () => await disposable.DisposeAsync().ConfigureAwait(false))
                                                                            .ConfigureAwait(false));
 #else
-            Parallel.ForEach(_assemblyFixtureMappings.Values.OfType<IAsyncDisposable>(),
-                             async (disposable, _) => await Aggregator.RunAsync(async () => await disposable.DisposeAsync().ConfigureAwait(false)));
+            await Task.WhenAll(_assemblyFixtureMappings.Values.OfType<IAsyncDisposable>().Select(
+                async asyncDisposable =>
+                {
+                    await Aggregator.RunAsync(async () => await asyncDisposable.DisposeAsync().ConfigureAwait(false));
+                })
+            );
     
 #endif
 
@@ -90,6 +94,12 @@ namespace Xunit.Extensions.AssemblyFixture
                                   async (disposable, _) => await Aggregator.RunAsync(async () => await disposable.DisposeAsync().ConfigureAwait(false))
                                                                            .ConfigureAwait(false));
 #else
+            await Task.WhenAll(_assemblyFixtureMappings.Values.OfType<IAsyncLifetime>().Select(
+                async asyncDisposable =>
+                {
+                    await Aggregator.RunAsync(async () => await asyncDisposable.DisposeAsync().ConfigureAwait(false));
+                })
+            );
             Parallel.ForEach(_assemblyFixtureMappings.Values.OfType<IAsyncLifetime>(),
                              async (disposable, _) => await Aggregator.RunAsync(async () => await disposable.DisposeAsync().ConfigureAwait(false)));
     
