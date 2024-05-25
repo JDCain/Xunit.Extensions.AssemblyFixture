@@ -49,10 +49,19 @@ namespace Xunit.Extensions.AssemblyFixture
                 foreach (Type fixtureAttribute in assemblyFixtures)
                 {
                     Type fixtureType = fixtureAttribute.GetGenericArguments()[0];
-                    var hasConstructorWithMessageSink = fixtureType.GetConstructor(new[] { typeof(IMessageSink) }) != null;
-                    _assemblyFixtureMappings[fixtureType] = hasConstructorWithMessageSink
-                        ? Activator.CreateInstance(fixtureType, ExecutionMessageSink)
-                        : Activator.CreateInstance(fixtureType);
+                    var hasExecutionMessageSink = fixtureType.GetConstructor(new[] { typeof(IMessageSink) }) != null;
+                    var hasExecutionAndDiagnosticsMessageSink = fixtureType.GetConstructor(new[] { typeof(IMessageSink), typeof(IMessageSink) }) != null;
+
+                    if (hasExecutionAndDiagnosticsMessageSink)
+                    {
+                        _assemblyFixtureMappings[fixtureType] = Activator.CreateInstance(fixtureType, ExecutionMessageSink, DiagnosticMessageSink);
+                    } else if (hasExecutionMessageSink)
+                    {
+                        _assemblyFixtureMappings[fixtureType] = Activator.CreateInstance(fixtureType, ExecutionMessageSink);
+                    } else
+                    {
+                        _assemblyFixtureMappings[fixtureType] = Activator.CreateInstance(fixtureType);
+                    }
                 }
 
                 // Initialize IAsyncLifetime fixtures

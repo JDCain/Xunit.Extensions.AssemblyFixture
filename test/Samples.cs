@@ -89,6 +89,23 @@ namespace AssemblyFixture.Tests
 		}
 	}
 
+	public class Sample6 : IAssemblyFixture<MyAssemblyFixtureWithDiagnosticsAndExecutionMessageSink>
+	{
+		private readonly MyAssemblyFixtureWithDiagnosticsAndExecutionMessageSink _fixture;
+
+		public Sample6(MyAssemblyFixtureWithDiagnosticsAndExecutionMessageSink fixture)
+		{
+			_fixture = fixture;
+		}
+
+		[Fact]
+		public void EnsureThatHaveIMessageSinks()
+		{
+			Assert.NotNull(_fixture.ExecutionMessageSink);
+            Assert.NotNull(_fixture.DiagnosticsMessageSink);
+        }
+	}
+
 
 	public class MyAssemblyFixture : IDisposable
 	{
@@ -126,6 +143,29 @@ namespace AssemblyFixture.Tests
 			//InstantiationCount = 0;
 		}
 	}
+
+    public class MyAssemblyFixtureWithDiagnosticsAndExecutionMessageSink : IDisposable
+    {
+        public static int InstantiationCount;
+
+        public IMessageSink ExecutionMessageSink { get; }
+
+        public IMessageSink DiagnosticsMessageSink { get; }
+
+        public MyAssemblyFixtureWithDiagnosticsAndExecutionMessageSink(IMessageSink executionMessageSink, IMessageSink diagnosticsMessageSink)
+        {
+            ExecutionMessageSink = executionMessageSink;
+            DiagnosticsMessageSink = diagnosticsMessageSink;
+            InstantiationCount++;
+        }
+
+        public void Dispose()
+        {
+            // Uncomment this and it will surface as an assembly cleanup failure
+            //throw new DivideByZeroException();
+            //InstantiationCount = 0;
+        }
+    }
 
     public class MyAssemblyFixtureWithAsyncLifetime : IAsyncLifetime
     {
